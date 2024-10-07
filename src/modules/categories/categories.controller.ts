@@ -34,7 +34,7 @@ export class CategoriesController {
   // }
 
   @Post(':title/image')
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   @UseInterceptors(FileInterceptor('file'))
   async addImageToCategory(
     @Param('title') title: string,
@@ -78,7 +78,7 @@ export class CategoriesController {
   }
 
   @Patch(':title')
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   async updateCategoryTitle(
     @Param('title') title: string,
     @Body() updateCategoryDto: UpdateCategoryDto,
@@ -87,7 +87,7 @@ export class CategoriesController {
   }
 
   @Delete(':title/image/:imageId')
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   async deleteImageFromCategory(
     @Param('title') title: string,
     @Param('imageId') imageId: string,

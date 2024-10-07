@@ -23,7 +23,7 @@ export class ImagesController {
   constructor(private imagesService: ImagesService) {}
 
   @Post()
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   @UseInterceptors(FileInterceptor('file'))
   async createImage(
     @UploadedFile() file: Express.Multer.File,
@@ -53,7 +53,7 @@ export class ImagesController {
   }
 
   @Patch(':id')
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   @UseInterceptors(FileInterceptor('file'))
   async updateImage(
     @Param('id') id: string,
@@ -64,7 +64,7 @@ export class ImagesController {
   }
 
   @Delete(':id')
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   async deleteImage(@Param('id') id: string) {
     return this.imagesService.deleteImage(id);
   }
