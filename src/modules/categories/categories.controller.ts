@@ -11,6 +11,7 @@ import {
   Delete,
   Patch,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CategoriesService } from './categories.service';
@@ -20,17 +21,20 @@ import { CreateImageInCategoryDto } from './dto/create-image-in-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Category } from './schemas/category.schema';
 import { Order } from 'src/constants/constants';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 @Controller('categories')
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
-  @Post()
-  async createCategory(@Body() createCategoryDto: CreateCategoryDto) {
-    return await this.categoriesService.createCategory(createCategoryDto);
-  }
+  // @Post()
+  // @UseGuards(AuthGuard)
+  // async createCategory(@Body() createCategoryDto: CreateCategoryDto) {
+  //   return await this.categoriesService.createCategory(createCategoryDto);
+  // }
 
   @Post(':title/image')
+  @UseGuards(AuthGuard)
   @UseInterceptors(FileInterceptor('file'))
   async addImageToCategory(
     @Param('title') title: string,
@@ -54,7 +58,7 @@ export class CategoriesController {
   async getCategoryByTitle(
     @Param('title') title: string,
     @Query('order') order: Order = Order.ASC,
-  ){
+  ) {
     try {
       return await this.categoriesService.getCategoryByTitle(title, order);
     } catch (error) {
@@ -74,6 +78,7 @@ export class CategoriesController {
   }
 
   @Patch(':title')
+  @UseGuards(AuthGuard)
   async updateCategoryTitle(
     @Param('title') title: string,
     @Body() updateCategoryDto: UpdateCategoryDto,
@@ -82,6 +87,7 @@ export class CategoriesController {
   }
 
   @Delete(':title/image/:imageId')
+  @UseGuards(AuthGuard)
   async deleteImageFromCategory(
     @Param('title') title: string,
     @Param('imageId') imageId: string,
@@ -98,8 +104,8 @@ export class CategoriesController {
     }
   }
 
-  @Delete(':title')
-  async deleteCategory(@Param('title') title: string) {
-    return await this.categoriesService.deleteCategory(title);
-  }
+  // @Delete(':title')
+  // async deleteCategory(@Param('title') title: string) {
+  //   return await this.categoriesService.deleteCategory(title);
+  // }
 }

@@ -5,18 +5,20 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { TextsService } from './texts.service';
 import { CreateTextDto } from './dto/create-text.dto';
 import { UpdateTextDto } from './dto/update-text.dto';
 import { ParseObjectIdPipe } from 'src/utils/parse-object-id-pipe.pipe';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 @Controller('texts')
 export class TextsController {
   constructor(private readonly textsService: TextsService) {}
 
   @Post()
+  @UseGuards(AuthGuard)
   create(@Body() createTextDto: CreateTextDto) {
     return this.textsService.create(createTextDto);
   }
@@ -37,6 +39,7 @@ export class TextsController {
   }
 
   @Patch(':id')
+  @UseGuards(AuthGuard)
   update(
     @Param('id', ParseObjectIdPipe) id: string,
     @Body() updateTextDto: UpdateTextDto,

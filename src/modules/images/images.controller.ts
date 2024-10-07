@@ -9,18 +9,21 @@ import {
   UploadedFile,
   UseInterceptors,
   NotFoundException,
+  UseGuards,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateImageDto } from './dto/create-image.dto';
 import { UpdateImageDto } from './dto/update-image.dto';
 import { ImagesService } from './images.service';
 import { Image } from './schemas/images.schema';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 @Controller('images')
 export class ImagesController {
   constructor(private imagesService: ImagesService) {}
 
   @Post()
+  @UseGuards(AuthGuard)
   @UseInterceptors(FileInterceptor('file'))
   async createImage(
     @UploadedFile() file: Express.Multer.File,
@@ -38,7 +41,9 @@ export class ImagesController {
   }
 
   @Get('section/:section')
-  async getImagesBySection(@Param('section') section: string): Promise<Image[]> {
+  async getImagesBySection(
+    @Param('section') section: string,
+  ): Promise<Image[]> {
     return await this.imagesService.findImagesBySection(section);
   }
 
@@ -48,6 +53,7 @@ export class ImagesController {
   }
 
   @Patch(':id')
+  @UseGuards(AuthGuard)
   @UseInterceptors(FileInterceptor('file'))
   async updateImage(
     @Param('id') id: string,
@@ -58,6 +64,7 @@ export class ImagesController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard)
   async deleteImage(@Param('id') id: string) {
     return this.imagesService.deleteImage(id);
   }
