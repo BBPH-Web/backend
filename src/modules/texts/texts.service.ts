@@ -4,6 +4,7 @@ import { UpdateTextDto } from './dto/update-text.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Text, TextDocument } from './schemas/texts.schema';
 import { Model } from 'mongoose';
+import { Languages, Order } from 'src/constants/constants';
 
 @Injectable()
 export class TextsService {
@@ -35,6 +36,19 @@ export class TextsService {
       );
     }
     return text;
+  }
+
+  async getProductsServicesTitlesByLanguage(language: Languages) {
+    const texts = await this.textModel
+      .find({
+        section: 'services',
+        language,
+        subsection: { $ne: 'subsection-0' }, // No incluir esta subsección, ya que es la del titulo principal "productos y servicios"
+      })
+      .select('title')
+      .sort({ subsection: Order.ASC }); // Ordenar por la subsección, para conservar el orden de la sección en el home
+
+    return texts.map((text) => text.title);
   }
 
   async update(id: string, updateTextDto: UpdateTextDto) {
