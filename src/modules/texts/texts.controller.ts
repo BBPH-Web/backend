@@ -12,6 +12,7 @@ import { CreateTextDto } from './dto/create-text.dto';
 import { UpdateTextDto } from './dto/update-text.dto';
 import { ParseObjectIdPipe } from 'src/utils/parse-object-id-pipe.pipe';
 import { AuthGuard } from 'src/guards/auth.guard';
+import { Languages } from 'src/constants/constants';
 
 @Controller('texts')
 export class TextsController {
@@ -36,6 +37,14 @@ export class TextsController {
   @Get('by-section/:section')
   findOneBySection(@Param('section') section: string) {
     return this.textsService.findOneBySection(section);
+  }
+
+  @Get('random/:section/:language')
+  getRandomTextBySection(
+    @Param('section') section: string,
+    @Param('language') language: Languages,
+  ) {
+    return this.textsService.getRandomTextBySection(section, language);
   }
 
   @Patch(':id')
