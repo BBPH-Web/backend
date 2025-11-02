@@ -19,7 +19,7 @@ export class TextsController {
   constructor(private readonly textsService: TextsService) {}
 
   @Post()
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   create(@Body() createTextDto: CreateTextDto) {
     return this.textsService.create(createTextDto);
   }
@@ -47,8 +47,13 @@ export class TextsController {
     return this.textsService.getRandomTextBySection(section, language);
   }
 
+  @Get('products-services-titles/:language')
+  getProductsServicesTitlesByLanguage(@Param('language') language: Languages) {
+    return this.textsService.getProductsServicesTitlesByLanguage(language);
+  }
+
   @Patch(':id')
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   update(
     @Param('id', ParseObjectIdPipe) id: string,
     @Body() updateTextDto: UpdateTextDto,
