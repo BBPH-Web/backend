@@ -39,10 +39,16 @@ export class TextsController {
     return this.textsService.findOneBySection(section);
   }
 
-  @Get('products-services-titles/:language')
-  getProductsServicesTitlesByLanguage(
+  @Get('random/:section/:language')
+  getRandomTextBySection(
+    @Param('section') section: string,
     @Param('language') language: Languages,
   ) {
+    return this.textsService.getRandomTextBySection(section, language);
+  }
+
+  @Get('products-services-titles/:language')
+  getProductsServicesTitlesByLanguage(@Param('language') language: Languages) {
     return this.textsService.getProductsServicesTitlesByLanguage(language);
   }
 

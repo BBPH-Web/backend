@@ -38,6 +38,17 @@ export class TextsService {
     return text;
   }
 
+  async getRandomTextBySection(section: string, language: Languages) {
+    const texts = await this.textModel.find({ section, language }).exec();
+    if (!texts || texts.length === 0) {
+      throw new NotFoundException(
+        `No se encontró el documento con sección ${section} y lenguaje ${language}`,
+      );
+    }
+    const randomIndex = Math.floor(Math.random() * texts.length);
+    return texts[randomIndex];
+  }
+  
   async getProductsServicesTitlesByLanguage(language: Languages) {
     const texts = await this.textModel
       .find({
