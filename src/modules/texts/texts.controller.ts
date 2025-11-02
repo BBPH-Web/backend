@@ -19,7 +19,7 @@ export class TextsController {
   constructor(private readonly textsService: TextsService) {}
 
   @Post()
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   create(@Body() createTextDto: CreateTextDto) {
     return this.textsService.create(createTextDto);
   }
@@ -47,7 +47,7 @@ export class TextsController {
   }
 
   @Patch(':id')
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   update(
     @Param('id', ParseObjectIdPipe) id: string,
     @Body() updateTextDto: UpdateTextDto,
